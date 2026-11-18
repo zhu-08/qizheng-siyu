@@ -1,12 +1,16 @@
-# 七政四余排盘 Skill
+# 七政四余排盘 Skill 1.0.0
 
-`qizheng-siyu` 按郑氏星案恒星制排盘，采用太阳起生时、遇卯安命。盘面列出十一曜、十二宫、命身宿度、节气四柱、月相、恩难仇用、化曜和神煞，也可按指定时刻计算行限与流年。读盘涵盖立太极、尽三、余奴相犯、穿度和六亲取法。
+`qizheng-siyu` 按郑氏星案恒星制排盘，采用太阳起生时、遇卯安命。盘面列出十一曜、十二宫、命身宿度、节气四柱、月相、恩难仇用和化曜，也可按指定时刻计算洞微大限与流年。读盘涵盖立太极、尽三、余奴相犯、穿度和六亲取法。
 
 在 Agent 中请求解盘时，会给出盘面依据，并用断语回答所问的人事或时段。
 
+## 使用许可
+
+仅限个人非商业使用。禁止商业使用、提取代码再利用或将本技能整合进其他项目。完整条件与适用范围见 [使用许可](LICENSE.md)。
+
 ## 直接排盘
 
-需要 Node.js 20 或更高版本。星历和排盘规则随技能附带，计算在本地完成，无需安装 npm 包或配置 API 密钥。
+需要 Node.js 20 或更高版本。星历和排盘规则随技能附带，在本地计算；出生资料和命盘留在本机。
 
 在仓库根目录运行以下虚构命例。
 
@@ -44,11 +48,21 @@ hermes skills install OWNER/REPO/skills/qizheng-siyu
 
 安装后可以在 Agent 里输入「用 qizheng-siyu 按郑案恒星排盘，出生时间是 2000 年 1 月 1 日 06:00，时区 Asia/Shanghai，列出命身、化曜和行限。」Codex CLI 可用 `$qizheng-siyu` 点名调用，Claude Code 和 Hermes 可用 `/qizheng-siyu`。Agent 执行脚本的环境需要能运行 Node.js。
 
+## 核对发布包
+
+在仓库根目录运行以下命令，核对文件摘要和 Ed25519 签名。需要确认签发者时，先向发布者单独核对公钥指纹，再把它传给 `--trusted-key`。 [公钥 SHA-256 指纹](PUBLIC-KEY-SHA256.txt)
+
+```sh
+node skills/qizheng-siyu/scripts/chart.cjs --verify
+```
+
+执行 `node skills/qizheng-siyu/scripts/chart.cjs --version` 可查看版本、发布编号和本地安装编号。公共包共享发布编号，各安装首次运行时会在技能目录外生成独立的 `QZSI-` 编号。编号不包含身份信息，也不自动回传。可用 `QZSY_STATE_DIR` 指定技能目录外的可写状态目录；无法持久保存时，脚本会标明本次运行编号。分享完整包时保留授权条款、第三方声明及发布标记。
+
 ## 使用说明
 
 - [技能入口](skills/qizheng-siyu/SKILL.md)
 - [排盘口径](skills/qizheng-siyu/references/calculation.md)
-- [恩难仇用与神煞](skills/qizheng-siyu/references/stars.md)
+- [恩难仇用](skills/qizheng-siyu/references/stars.md)
 - [技法索引](skills/qizheng-siyu/references/method-index.md)
 - [读盘技法](skills/qizheng-siyu/references/reading.md)
 - [行限与流年](skills/qizheng-siyu/references/timing.md)

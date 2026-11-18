@@ -1,9 +1,19 @@
 #!/usr/bin/env node
+// qizheng-siyu 1.0.0 | QZSY-20261118-7DE98D1C7FF0B5DF | LICENSE.md applies to licensable original content.
 'use strict';
 
 const { parseArgs } = require('node:util');
+const path = require('node:path');
 const { compute } = require('./chart-core.cjs');
 const { annualSampleDates, computeLimits } = require('./limits.cjs');
+
+const { release, releaseLabel, verifyRelease } = require('./release-info.cjs');
+const { matchInput } = require('./input-rules.cjs');
+const { getInstallation } = require('./installation-info.cjs');
+
+function installationInfo() {
+  return getInstallation({ skillRoot: path.resolve(__dirname, '..'), distributionId: release.distributionId });
+}
 
 const HELP = `七政四余本命排盘｜郑氏星案恒星制
 
@@ -18,9 +28,12 @@ node scripts/chart.cjs --birth "2000-01-01T06:00" --tz Asia/Shanghai
   --year    查询节气年的十二节月中旬样点，1800–2199，与 --at 二选一
   --at-tz   查询时间的时区或 UTC 偏移，默认沿用 --tz
   --child-base  洞微童限基数，10（默认）或 9
-  --all-shensha  列出内置神煞全表的落点
   --format  markdown（默认）或 json
   --help    显示帮助
+  --version 显示版本及发布标记
+  --verify  核对发布文件的 SHA-256 清单及 Ed25519 签名
+  --trusted-key  验签时使用作者另行提供的公钥 SHA-256 指纹
+  --match-input  检查简短输入的快捷规则
 
 负偏移或坐标可用等号传入，例如 --tz=-05:00 --lon=-74.01。`;
 
@@ -34,9 +47,12 @@ const options = {
   year: { type: 'string' },
   'at-tz': { type: 'string' },
   'child-base': { type: 'string', default: '10' },
-  'all-shensha': { type: 'boolean' },
   format: { type: 'string', default: 'markdown' },
   help: { type: 'boolean' },
+  version: { type: 'boolean' },
+  verify: { type: 'boolean' },
+  'trusted-key': { type: 'string' },
+  'match-input': { type: 'string' },
 };
 
 function parseClock(value, label) {
@@ -117,17 +133,31 @@ function chartAt(when, timeZone, nodeConvention, options = {}) {
     nodeConvention,
     longitude: options.longitude,
     latitude: options.latitude,
-    allShensha: options.allShensha,
   });
 }
 
 function main() {
   const { values } = parseArgs({ options, strict: true });
+  if (values['match-input'] !== undefined) {
+    process.stdout.write(`${JSON.stringify(matchInput(values['match-input']))}\n`);
+    return;
+  }
   if (values.help) {
     process.stdout.write(`${HELP}\n`);
     return;
   }
 
+  if (values.version) {
+    process.stdout.write(`${releaseLabel(installationInfo())}\n`);
+    return;
+  }
+  if (values.verify) {
+    const result = verifyRelease({ trustedKeyFingerprint: values['trusted-key'] });
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    process.exitCode = result.valid ? 0 : 1;
+    return;
+  }
+  if (values['trusted-key'] !== undefined) throw new Error('--trusted-key 需要与 --verify 一起使用。');
   const formats = ['json', 'markdown'];
   if (!formats.includes(values.format)) throw new Error('--format 只接受 json 或 markdown。');
   const nodeOptions = new Map([['ji-north', 'jiNorth'], ['luo-north', 'luoNorth']]);
@@ -146,8 +176,9 @@ function main() {
   }
   if (!['9', '10'].includes(values['child-base'])) throw new Error('--child-base 只接受 9 或 10。');
   const limitOptions = { childBaseYears: Number(values['child-base']) };
+  const installation = installationInfo();
   const chart = chartAt(values.birth, values.tz, nodeConvention, {
-    label: '出生', longitude, latitude, allShensha: values['all-shensha'],
+    label: '出生', longitude, latitude,
   });
   const targetZone = values['at-tz'] ?? values.tz;
   const target = values.at === undefined ? null : chartAt(values.at, targetZone, nodeConvention);
@@ -164,6 +195,7 @@ function main() {
     if (!samples.length) throw new Error('该节气年没有出生后的中旬样点。可用 --at 查询具体时间。');
     chart.limits.annual = { year, timeZone: targetZone, samples };
   }
+  chart.installation = installation;
   const output = values.format === 'json'
     ? JSON.stringify(chart, null, 2)
     : require('./format-chart.cjs').markdown(chart);

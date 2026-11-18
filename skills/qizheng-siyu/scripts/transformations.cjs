@@ -1,3 +1,4 @@
+// qizheng-siyu 1.0.0 | QZSY-20261118-7DE98D1C7FF0B5DF | LICENSE.md applies to licensable original content.
 'use strict';
 
 const STEMS = '甲乙丙丁戊己庚辛壬癸';

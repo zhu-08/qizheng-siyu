@@ -1,0 +1,6 @@
+{
+  "algorithm": "Ed25519",
+  "keyFingerprintSha256": "e82deef08cfc51d7f3d321b5369ffb48afa30719a70ed974e73b6840473288fa",
+  "manifestSha256": "0a349ff56d187bbd58156e29b472314b4d0a8b230ed2595e2988e678104c11f6",
+  "signature": "no5W2ssSuKdCfzEvnfrs+V0jyfrh/8xK6j9mQLrfV5YtSXnHmyn3fP9dQ6zTWfyg/WuuZ6INCqtDsshAEMLwCQ=="
+}

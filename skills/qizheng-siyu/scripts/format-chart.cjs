@@ -1,4 +1,7 @@
+// qizheng-siyu 1.0.0 | QZSY-20261118-7DE98D1C7FF0B5DF | LICENSE.md applies to licensable original content.
 'use strict';
+
+const { releaseLabel } = require('./release-info.cjs');
 
 const BODY_NAMES = {
   日: '太阳', 月: '太阴', 金: '金星', 木: '木星', 水: '水星', 火: '火星', 土: '土星',
@@ -85,13 +88,12 @@ function timingRows(limits) {
       '',
       `以下为 ${annual.timeZone} 各节月中旬的代表时刻。宫度交界按所问日期另查。`,
       '',
-      '| 取样日期 | 宫限与度限 | 本命顶星 | 小限 | 月限 | 太岁宫流年神煞 |',
-      '| --- | --- | --- | --- | --- | --- |',
+      '| 取样日期 | 宫限与度限 | 本命顶星 | 小限 | 月限 |',
+      '| --- | --- | --- | --- | --- |',
       ...annual.samples.map(sample => {
         const current = sample.current ? `${signAndHouse(sample.current)} · ${mansionText(sample.current)}` : '超出首轮';
         const top = labels(sample.top.natal.map(body => BODY_NAMES[body.name]));
-        const shensha = labels(sample.shensha.find(row => row.sign === sample.taiSui.sign).names);
-        return `| ${sample.localDateTime.slice(0, 10)} | ${current} | ${top} | ${signAndHouse(sample.small)} | ${signAndHouse(sample.monthly.limit)} | ${shensha} |`;
+        return `| ${sample.localDateTime.slice(0, 10)} | ${current} | ${top} | ${signAndHouse(sample.small)} | ${signAndHouse(sample.monthly.limit)} |`;
       }),
     );
   }
@@ -115,12 +117,6 @@ function timingRows(limits) {
     '| --- | --- | --- | --- |',
     ...target.taiSui.houses.map(house => `| ${house.relation} | ${signAndHouse(house)} | ${labels(house.natal.map(name => BODY_NAMES[name]))} | ${labels(house.transitExtras.map(name => BODY_NAMES[name]))} |`),
     '',
-    '### 流年神煞',
-    '',
-    '| 本命地支宫 | 流年神煞 |',
-    '| --- | --- |',
-    ...target.shensha.map(row => `| ${signAndHouse(row)} | ${labels(row.names)} |`),
-    '',
     '### 流曜落本命宫',
     '',
     ...bodyTable(target.transit),
@@ -129,8 +125,7 @@ function timingRows(limits) {
 }
 
 function markdown(chart) {
-  const { input, method, calendar, lunarPhase, life, self, helpers, houses, bodies, shensha } = chart;
-  const shenshaBySign = Object.fromEntries(shensha.map(row => [row.sign, row.names]));
+  const { input, method, calendar, lunarPhase, life, self, helpers, houses, bodies } = chart;
   const zone = /^[+-]/.test(input.timeZone) ? '' : ` ${input.timeZone}`;
   const lines = [
     '# 七政四余本命盘',
@@ -165,16 +160,17 @@ function markdown(chart) {
     '',
     '## 十二人事宫',
     '',
-    '| 人事宫 | 地支宫 | 宫主 | 守宫星 | 本命神煞 |',
-    '| --- | --- | --- | --- | --- |',
+    '| 人事宫 | 地支宫 | 宫主 | 守宫星 |',
+    '| --- | --- | --- | --- |',
     ...houses.map(house => {
       const occupants = bodies.filter(body => body.house === house.name)
         .sort((a, b) => a.signDegree - b.signDegree)
         .map(body => BODY_NAMES[body.name]);
-      return `| ${house.name} | ${house.sign} | ${house.ruler} | ${labels(occupants)} | ${labels(shenshaBySign[house.sign])} |`;
+      return `| ${house.name} | ${house.sign} | ${house.ruler} | ${labels(occupants)} |`;
     }),
   );
   if (chart.limits) lines.push(...timingRows(chart.limits));
+  lines.push('', releaseLabel(chart.installation));
   return lines.join('\n');
 }
 

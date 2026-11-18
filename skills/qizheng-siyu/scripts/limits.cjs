@@ -1,7 +1,7 @@
+// qizheng-siyu 1.0.0 | QZSY-20261118-7DE98D1C7FF0B5DF | LICENSE.md applies to licensable original content.
 'use strict';
 
 const { computeTransformations } = require('./transformations.cjs');
-const { computeShensha } = require('./shensha.cjs');
 
 // 洞微行限采用约取节月，顶星按同络宫内度计算。
 const FIXED_TERM_DAYS = [6, 4, 6, 5, 6, 6, 7, 8, 8, 8, 7, 7];
@@ -195,14 +195,6 @@ function readTarget(natal, chart, current, periods, age, exitAge) {
     top: { natal: topStars(natal.bodies, current), transit: topStars(transit, current) },
     taiSui: taiSuiGroups(yearBranch, bySign, natal.bodies, transit),
     transit,
-    shensha: computeShensha({
-      calendar: chart.calendar,
-      sunSign: transit[0].sign,
-      moonSign: moon.sign,
-      houses: natal.houses,
-      scope: 'transit',
-      includeAll: natal.input.allShensha,
-    }),
   };
 }
 

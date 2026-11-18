@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "distributionId": "QZSY-20261118-7DE98D1C7FF0B5DF",
+  "sha256": {
+    "LICENSE.md": "6fc547e94b958b4e436f110e75d138d784556059b37a0ec50a7662133b476ef1",
+    "references/advanced.md": "f136895738dfa07449b7762e6f69df3527e887f8859c9c2a8fc85ccef738ef3f",
+    "references/calculation.md": "651ec40855c984f67b535507873eeca2e7ad54e370f6b4d7b195d1a46fcc9e9a",
+    "references/consulting.md": "d106cd5e8f4246530a846dcd4859436eda7e3af29623226aa697d9a27b68afb3",
+    "references/foundations.md": "507b9ad17dc4ec05c1805fe3cb1cefe60ccf2a4824c501709a052bd3f0925018",
+    "references/method-index.md": "e3956762d647dba58674d580116115ecaec96da2e90edc31199575f4e8c67521",
+    "references/palace-combinations.md": "5cfcb611807c2e02c3b8bb14837635b78acb01e2e9383d36aa5ed0e5246bd6d6",
+    "references/reading.md": "534d4c57b17ec728df04f03d887fa6ea817eb48dc866b17e297c06e5739adb57",
+    "references/stars.md": "ce7896edd3767e538b180bd0e48f36b031dbd3e882650ba491253cbcd3f898dd",
+    "references/timing.md": "f4eea27f3c70f9c036921b6b81731ea783af6336919068d77e4a1712e2e463c6",
+    "references/topics.md": "123c85e7f82ee6abaebc137f19a0f65af47a7a798ba59a457a118cacefe37e6d",
+    "release-public-key.pem": "83d0e059f5df3ff71100c01992abccd5c58880cb33df9bdc99be81d29ab2135b",
+    "release.json": "7b066ed844c2c142cd6d5c6f82d1182aa24bd773896184ac012f21bc60ffbbc7",
+    "scripts/chart-core.cjs": "567bcdeba1df4cab189e23a6197c42347d44c2e86efab18df9d65b9a9b810c95",
+    "scripts/chart.cjs": "423b46d37486e0f433fe4e00ebb0c6a19794ae6a00227a05bbcce70cfe17b28a",
+    "scripts/format-chart.cjs": "8605d8b25731d4a1ecd9df58c63ce0ed60f65fd4504a5bd8bc56ab31a2983d85",
+    "scripts/input-rules.cjs": "ce3cc2f989116b3fc7eded48d3226f5f3885bf94945b915e0c1507052e428c5e",
+    "scripts/installation-info.cjs": "8413739d7d7ddc6fc90dd1e953dee4f31cd23dd23de750ec596b0571f10ef5d5",
+    "scripts/limits.cjs": "08f7aed9d3441c6311482e4b2b3f3311bd1d3ac7def43f88f8f8bb77b2666f5f",
+    "scripts/release-info.cjs": "b0cb910a83ef474918ac71d96b218c69b9ea6b1c2905cc206cfa164cb2ca9f56",
+    "scripts/transformations.cjs": "410172f3688effbbaa9ac95fbd21ca8836761f6438b480ef031d5ac49fe250dd",
+    "scripts/vendor/astronomy.cjs": "729c0ce37cc1a8096034a689039a5f04585ee8184177c638e8c74dec4fa3185a",
+    "SKILL.md": "4d9823d66717627678c4a11f8913b8b8b1a749819dcf7dbfea44a318e490d37e",
+    "THIRD_PARTY_NOTICES.md": "5c4ca7a3e96c40f86b29b5ed55f8ac7493b820a125bcd7a61ae32458970264f4"
+  }
+}

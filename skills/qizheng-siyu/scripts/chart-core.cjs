@@ -1,8 +1,8 @@
+// qizheng-siyu 1.0.0 | QZSY-20261118-7DE98D1C7FF0B5DF | LICENSE.md applies to licensable original content.
 'use strict';
 
 const astronomy = require('./vendor/astronomy.cjs');
 const { computeTransformations } = require('./transformations.cjs');
-const { computeShensha } = require('./shensha.cjs');
 
 astronomy.SetDeltaTFunction(astronomy.DeltaT_EspenakMeeus);
 
@@ -366,14 +366,6 @@ function compute(input) {
     };
   });
   const horizon = horizonEvents(birth, utcDate, localTimestamp);
-  const shensha = computeShensha({
-    calendar,
-    sunSign: bodies[0].sign,
-    moonSign: self.sign,
-    houses,
-    dayBirth: horizon.dayBirth,
-    includeAll: input.allShensha === true,
-  });
 
   return {
     input: {
@@ -383,7 +375,6 @@ function compute(input) {
       longitude: birth.longitude ?? null,
       latitude: birth.latitude ?? null,
       nodeConvention: birth.nodeConvention,
-      allShensha: input.allShensha === true,
     },
     method: {
       zodiac: '郑氏星案恒星制',
@@ -409,7 +400,6 @@ function compute(input) {
     },
     houses,
     bodies,
-    shensha,
   };
 }
 

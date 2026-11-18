@@ -1,16 +1,6 @@
-# macOS
 .DS_Store
-.AppleDouble
-.LSOverride
-._*
-
-# Editor
-*.swp
-*.swo
-*~
-.vscode/
-.idea/
-
-# Node
 node_modules/
-npm-debug.log*
+private/
+*.key
+**/*signing-key*
+**/distributions.jsonl
